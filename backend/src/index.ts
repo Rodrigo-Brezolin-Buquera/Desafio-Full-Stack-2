@@ -2,6 +2,8 @@ import express from "express"
 import "express-async-errors";
 import cors from "cors"
 import { AddressInfo } from "net"
+import { BaseDatabase } from "./database/config"
+import { syncDatabase } from "./database/sync";
 
 
 export const app = express()
@@ -19,5 +21,11 @@ const server = app.listen(3003, () => {
 
 
 app.get('/', (req, res) => {
-    res.send('Backend Express funcionando!');
+    res.send('Backend Express ok!');
 });
+
+
+(async () => {
+  await BaseDatabase.testConnection();
+  await syncDatabase()
+})();
