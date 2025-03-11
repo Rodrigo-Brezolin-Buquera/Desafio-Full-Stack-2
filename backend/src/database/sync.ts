@@ -20,8 +20,6 @@ export async function syncDatabase() {
     console.log("Banco sincronizado e dados inseridos!");
   } catch (error) {
     console.error("Erro ao sincronizar banco:", error);
-  } finally {
-    await BaseDatabase.getConnection().close();
-  }
+  } 
 }
 

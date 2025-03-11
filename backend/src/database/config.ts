@@ -15,7 +15,10 @@ export class BaseDatabase {
   );
 
   public static getConnection() {
-    return this.connection; 
+    if (!this.connection) {
+      throw new Error("Conexão com o banco de dados não foi inicializada.");
+    }
+    return this.connection;
   }
 
   public static async testConnection() {
