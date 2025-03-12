@@ -5,10 +5,10 @@ export class UserController {
     private userBusiness = new UserBusiness()
 
   public async login(req: Request, res: Response): Promise<void> {
-    const email = req.body.email
-    const password = req.body.password
-    const token = await this.userBusiness.login({email, password});
-    res.status(200).send({token});
+      const email = req.body.email
+      const password = req.body.password
+      const token = await this.userBusiness.login({email, password});
+      res.status(200).send({token});
   }
 
   public async signup(req: Request, res: Response): Promise<void> {
