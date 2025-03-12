@@ -1,8 +1,9 @@
 import React from 'react'
+import Login from '../sections/home/view'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <Login/>
   )
 }
 

@@ -1,19 +1,15 @@
-import { useLayoutEffect, useState } from "react";
-import { goToLogin } from "../routes/coordinator"
-import { deleteStorageItem, getStorageItem } from "../utils/storageManager";
+import { useLayoutEffect } from "react";
+import { getStorageItem } from "../utils/storageManager";
 import { useNavigate } from "react-router-dom";
-
+import { goToAdminPage, goTohome, goToUserPage } from "../router/coordinator";
 
 export const useProtectedPage = (role) => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
 
-    // useLayoutEffect(() => {
-    //     const token = getStorageItem("token")
-    //       if(!token) {
-    //         goToAdmin(navigate)
-    //       }
-    //   })
-
-
+  useLayoutEffect(() => {
+    const token = getStorageItem("token");
+    if (!token) {
+      goTohome(navigate);
+    }
+  });
 };
-
