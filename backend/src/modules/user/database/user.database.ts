@@ -1,10 +1,9 @@
 import { BaseDatabase } from "../../../database/config";
 
 import { User } from "../../../database/models/User";
+import { UserDBDTO, UserType } from "../DTOs/userDtos";
 
-type UserType = InstanceType<typeof User>;
 
-type UserDBDTO = { email: string; password: string; cpf:string; name: string; role: string }
 
 
 export class UserDatabase extends BaseDatabase {

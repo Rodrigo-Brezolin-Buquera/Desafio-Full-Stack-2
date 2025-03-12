@@ -1,31 +1,68 @@
+import { CustomError } from "../../../common/error/customError";
+import {  Authenticator } from "../../../common/services/Authenticator";
 import { UserDatabase } from "../database/user.database"
-
-
-type CredentialsDTO = { email:string, password: string }
-
-type UserDTO= { email: string; password: string; name: string; cpf:string }
+import { CredentialsDTO, IUser, UserDTO } from "../DTOs/userDtos";
 
 
 export class UserBusiness {
   private userDatabase = new UserDatabase()
+  private auth = new Authenticator()
 
-  public async login(credentials: CredentialsDTO): Promise<void> {
+  public async login(credentials: CredentialsDTO): Promise<string> {
     const {email, password} = credentials
-     await this.userDatabase.findUserbyEmail(email);
+    const user = await this.userDatabase.findUserbyEmail(email) as IUser
+
+    if(!user) {
+      throw new CustomError("Email ou senha inválidos, tente novavamente", 404)
+    }
+
+    if (password !== user!.password) { 
+      throw new CustomError("Email ou senha inválidos, tente novavamente", 404)
+    }
+
+    const token = this.auth.generateToken({id: user.cpf, role: user.role})
+    return token
   }
 
-  public async signup(userDTO: UserDTO): Promise<void> {
+  public async signup(userDTO: UserDTO): Promise<string> {
     const { email, password, cpf, name} = userDTO
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new CustomError("E-mail inválido.", 406);
+    }
+  
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      throw new CustomError("Senha inválida. Deve conter pelo menos 8 caracteres, incluindo letras e números.", 406);
+    }
+  
+    const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+    if (!cpfRegex.test(cpf)) {
+      throw new CustomError("CPF inválido. Use o formato XXX.XXX.XXX-XX.", 406);
+    }
+
+    if (!name) {
+      throw new CustomError("Insira uma nome de usuário", 406);
+    }
+
     const newUser = { email, password, cpf, name, role: "user"}
+
     await this.userDatabase.createUser(newUser);
+    const token = this.auth.generateToken({id: newUser.cpf, role: newUser.role})
+    return token
   }
 
   public async findUsers(): Promise<void> {
     const result = await this.userDatabase.findUsers();
   }
 
-  public async findUser(id:string): Promise<void> {
-    const result = await this.userDatabase.findUser(id);
+  public async findUser(id:string): Promise<IUser> {
+    const user = await this.userDatabase.findUser(id) as IUser
+    if (!user) {
+      throw new CustomError("Usuário não encontrado", 404)
+    }
+    return user
   }
 
 

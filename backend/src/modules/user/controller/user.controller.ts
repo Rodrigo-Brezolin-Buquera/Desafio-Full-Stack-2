@@ -7,8 +7,8 @@ export class UserController {
   public async login(req: Request, res: Response): Promise<void> {
     const email = req.body.email
     const password = req.body.password
-    const result = await this.userBusiness.login({email, password});
-    res.status(200).send(result);
+    const token = await this.userBusiness.login({email, password});
+    res.status(200).send({token});
   }
 
   public async signup(req: Request, res: Response): Promise<void> {
@@ -16,8 +16,8 @@ export class UserController {
     const password = req.body.password
     const name = req.body.name
     const cpf = req.body.cpf
-    await this.userBusiness.signup({email, password, name, cpf});
-    res.status(201).send({ message: "Conta criada com sucesso" });
+    const token = await this.userBusiness.signup({email, password, name, cpf});
+    res.status(201).send({token, message: "Conta criada com sucesso" });
   }
 
   public async findUser(req: Request, res: Response): Promise<void> {
