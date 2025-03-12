@@ -10,12 +10,8 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-     const data =   await loginRequest({email, password},navigate)
+     await loginRequest({email, password},navigate)
 
-    } catch {
-
-    }
   };
 
   return (

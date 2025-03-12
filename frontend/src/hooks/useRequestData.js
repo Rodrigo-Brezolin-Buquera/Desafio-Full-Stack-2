@@ -4,13 +4,13 @@ import { getHeaders } from "../utils/storageManager";
 
 export const useRequestData = (path, trigger) => {
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(false)
 
     const fetchData = async () => {
         try {
             setLoading(true);
             const res = await api.get(path, getHeaders());
-            setData(res.data.result);
+            setData(res.data);
         } catch (err) {
 
         } finally {
@@ -22,5 +22,5 @@ export const useRequestData = (path, trigger) => {
         fetchData()
     }, [trigger]);
 
-    return {data, loading, setLoading }
+    return {data, isLoading, setLoading }
 }

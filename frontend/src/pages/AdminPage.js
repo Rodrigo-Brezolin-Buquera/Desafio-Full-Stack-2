@@ -1,10 +1,9 @@
 import React from 'react'
-import { useProtectedPage } from '../hooks/useProtectedPage'
+import Admin from '../sections/admin/view'
 
 const AdminPage = () => {
-  useProtectedPage()
   return (
-    <div>AdminPage</div>
+    <Admin/>
   )
 }
 
