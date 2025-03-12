@@ -6,6 +6,7 @@ import { BaseDatabase } from "./database/config"
 import { syncDatabase } from "./database/sync";
 import { UserController } from "./modules/user/controller/user.controller";
 import { TransactionController } from "./modules/transaction/controller/transaction.controller";
+import { errorMiddlewWare } from "./common/error/errorMiddleware";
 
 
 export const app = express()
@@ -27,6 +28,8 @@ app.get('/', (req, res) => {
 
 const userController = new UserController()
 
+// adicionar midlewares de rota
+
 app.get('/user', (req, res) => userController.findUsers(req, res));
 app.get('/user/:id', (req, res) => userController.findUser(req, res));
 
@@ -40,8 +43,7 @@ app.get('/transaction/:id', (req, res) => transactionController.getUserTransacti
 app.post('/transaction', (req, res) => transactionController.createTransaction(req, res));
 
 
-
-
+app.use(errorMiddlewWare);
 
 
 
