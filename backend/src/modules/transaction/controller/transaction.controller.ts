@@ -5,7 +5,7 @@ export class TransactionController {
   private transactionBusiness = new TransactionBusiness();
 
   public async getUserTransactions(req: Request, res: Response): Promise<void> {
-    const cpf = req.body.cpf;
+    const cpf = req.params.id;
     const result = await this.transactionBusiness.getUserTransactions(cpf);
     res.status(200).send(result);
   }
@@ -16,16 +16,13 @@ export class TransactionController {
   }
 
   public async createTransaction(req: Request, res: Response): Promise<void> {
-    const { cpf, description, transaction_date, point_value, value, status } =
-      req.body;
+    const { description, point_value, value } =req.body;
 
     const transactionInput = {
-      cpf,
+      cpf: req.params.id ,
       description,
-      transaction_date,
       point_value,
       value,
-      status,
     };
 
     await this.transactionBusiness.createTransaction(transactionInput);
