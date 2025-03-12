@@ -14,6 +14,7 @@ export class UserDatabase extends BaseDatabase {
 
   public async findUsers(): Promise<UserType[]> {
     return await User.findAll();
+
   }
 
   public async findUserbyEmail(email: string): Promise<UserType | null> {

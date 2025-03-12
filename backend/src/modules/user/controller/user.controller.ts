@@ -29,6 +29,7 @@ export class UserController {
 
   public async findUsers(req: Request, res: Response): Promise<void> {
     const result = await this.userBusiness.findUsers();
+    console.log(result)
     res.status(200).send(result);
   }
 

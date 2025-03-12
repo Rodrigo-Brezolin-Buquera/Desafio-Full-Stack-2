@@ -62,8 +62,10 @@ export class UserBusiness {
     return token;
   }
 
-  public async findUsers(): Promise<void> {
-    const result = await this.userDatabase.findUsers();
+  public async findUsers(): Promise<IUser[]> {
+    const res = await this.userDatabase.findUsers();
+    const users = res.map(user => user.dataValues);
+    return users
   }
 
   public async findUser(id: string): Promise<IUser> {

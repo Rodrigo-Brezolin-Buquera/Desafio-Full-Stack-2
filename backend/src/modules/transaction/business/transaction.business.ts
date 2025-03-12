@@ -13,7 +13,9 @@ export class TransactionBusiness {
   }
 
   public async getAllTransactions(): Promise<ITrasaction[]> {
-    return await this.transactionDatabase.getAllTransactions()
+    const res = await this.transactionDatabase.getAllTransactions()
+    const transactions = res.map(trans => trans.dataValues);
+    return transactions
   }
 
   public async createTransaction(input: TrasactionDBDTO): Promise<void> {
