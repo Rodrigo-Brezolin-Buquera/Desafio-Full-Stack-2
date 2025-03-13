@@ -16,15 +16,13 @@ export class TransactionController {
   }
 
   public async createTransaction(req: Request, res: Response): Promise<void> {
-    const { description, point_value, value } =req.body;
 
     const transactionInput = {
-      cpf: req.params.id ,
-      description,
-      point_value,
-      value,
+      cpf: req.body.cpf ,
+      description: req.body.description,
+      value: req.body.value,
     };
-
+    console.log(transactionInput)
     await this.transactionBusiness.createTransaction(transactionInput);
     res.status(201).send({ message: "Transação criada com sucesso" });
   }

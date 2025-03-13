@@ -8,7 +8,7 @@ export type TransactionType = InstanceType<typeof Transaction>;
     cpf: string,
     description: string,
     transaction_date?: Date,
-    point_value: number,
+    point_value?: number,
     value: number,
     status?: "Aprovado" | "Reprovado" | "Em avaliação"
 }

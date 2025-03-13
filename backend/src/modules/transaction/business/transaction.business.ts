@@ -19,13 +19,11 @@ export class TransactionBusiness {
   }
 
   public async createTransaction(input: TrasactionDBDTO): Promise<void> {
-    const { cpf, description, point_value, value } = input;
+    const { cpf, description, value } = input;
 
     if (
       !cpf ||
-      !description ||
-      point_value === undefined ||
-      value === undefined
+      !description 
     ) {
       throw new CustomError("Todos os campos são obrigatórios.", 400);
     }
@@ -36,9 +34,6 @@ export class TransactionBusiness {
       throw new CustomError("Descrição deve ser uma string.", 400);
     }
 
-    if (typeof point_value !== "number") {
-      throw new CustomError("Valor do ponto deve ser um número.", 400);
-    }
     if (typeof value !== "number") {
       throw new CustomError("Valor da transação deve ser um número.", 400);
     }
@@ -49,9 +44,7 @@ export class TransactionBusiness {
         400
       );
     }
-    if (point_value < 0) {
-      throw new CustomError("Valor do ponto não pode ser negativo.", 400);
-    }
+   
     if (value < 0) {
       throw new CustomError("Valor da transação não pode ser negativo.", 400);
     }
@@ -65,6 +58,7 @@ export class TransactionBusiness {
       ...input,
       status: "Em avaliação",
       transaction_date: new Date(`${yyyy}-${mm}-${dd}`),
+      point_value: value
     };
 
     await this.transactionDatabase.createTransaction(output);
