@@ -52,7 +52,7 @@ export class UserBusiness {
       throw new CustomError("Insira uma nome de usuário", 406);
     }
 
-    const newUser = { email, password, cpf, name, role: "user" };
+    const newUser = { email, password, cpf, name, role: "usuario" };
 
     await this.userDatabase.createUser(newUser);
     const token = this.auth.generateToken({
