@@ -1,45 +1,63 @@
-Olá, se você recebeu esse teste é porque gostamos do seu perfil, e está a poucos 
-passos de fazer parte do nosso time!
-
-Gostaríamos que você participasse desse desafio para que possamos testar suas habilidades técnicas, então bora lá!
-
 # Teste Full-Stack 2 Nex Digital
-Este teste busca analisar as capacidades técnicas para a vaga de Desenvolvedor Full-Stack 2.
 
-## Desafio
-Você deverá desenvolver uma aplicação que consiste em: um banco de dados (MySQL), uma API (Node.js + Sequelize.js) e o Front-end (React.js). 
+## Tecnologias 
+Frontend: React, react-router-dom, react-hook-form, axios, jwt-decode e MUI.
 
-Na aplicação, o administrador deve fazer o upload de uma planilha seguindo o modelo abaixo.
+Backend: Node, express, sequelize, jsonwebtoken, express-async-errors e docker
 
-| CPF            | Descrição da transação | Data da transação | Valor em pontos | Valor     | Status       |
-|----------------|------------------------|-------------------|-----------------|-----------|--------------|
-| 282.279.300-00 | Venda do produto X     | 10-10-2022        | 10,000          | 10.000,00 | Aprovado     |
-| 282.279.300-00 | Venda do produto Y     | 10-10-2022        | 10,000          | 10.000,00 | Reprovado    |
-| 282.279.300-00 | Venda do produto Z     | 10-10-2022        | 10,000          | 10.000,00 | Em avaliação |
-|                |                        |                   |                 |           |              |
+## Funcionalidades Páginas Frontend
+Home => Faz login com email e senha, caso não tenha conta direciona para Signup
 
-Essa planilha deverá criar transações para os usuários que estão cadastrados no sistema.
+Signup => Permite a criação de um novo usuário 
 
-O administrador também deverá ter acesso a um relatório que listará todas as transações inseridas com os filtros de CPF, produto, range de data transação, range de valor e status da transação
+Admin => Página protegida, admin pode vizualizar as trasações e filtra-las
 
-O usuário comum deverá se cadastrar utilizando nome, e-mail e senha e se autenticar na aplicação utilizando JWT. Já na home, o usuário deverá ter acesso a página de extrato, com a lista de transações relacionadas a ele com opção de filtros de status, e escolha de um range data da transação. O usuário também devera ter acesso a uma carteira onde poderá ver o saldo total, que deve contabilzar apenas os pontos aprovados.
+User => Página protegida, usuário pode criar transações, ver sua transações, filtra-las e ver o total de pontos acumulados.
 
-## Pré-Requisitos
+## Funcionalidades Endpoints Backend
+Backend está divido em 2 rotas com 3 camadas cada. 1 Middlware para tokens e outros para erros async.
 
-- Front-End - React.js
-- API - Node.js + Sequelize.js
-- Banco de dados - MySQL
+Rota user:
 
-## O que será avaliado
+GET /user  => protegido admin, retornas todos os usuários do banco
 
-- Organização geral do código
-- Padronização de nomes de variáveis/funções
-- Performance e segurança do código
-- Utilização correta de git
+GET /user/:id => protegido user, retorna apenas o uusário logado
 
-## Diferencial
+POST /login => input de email e senha, retorna token de acesso
 
-- Manter o código limpo e em inglês 
-- Utilizar princípios SOLID
-- Agilidade
-- Código maciço com bons tratamentos de erros e bugs	
+POST /signup => input de email, nome, cpf e senha, retorna token de acesso
+
+Rota transaction:
+
+GET  transaction  => protegido admin, retornas todos as transações 
+
+GET  transaction/:id  => protegido user, retornas todos as transações do usuário logado
+
+POST transaction => protegido user, cria uma nova transação para o dia de hoje 
+
+## Usuários pré existentes
+```
+Admin:
+email: admin@email.com,
+senha: senha123
+
+User:
+email: joao@email.com
+senha: senha456
+```
+
+## Como rodar o projeto:
+Pelo terminal:
+```bash
+git clone https://github.com/Rodrigo-Brezolin-Buquera/Desafio-Full-Stack-2.git
+
+cd backend
+docker compose up -d
+npm run dev
+```
+Abra outro terminal na mesma pasta inicial
+```bash
+cd frontend 
+npm run start
+acesse: http://localhost:3000 
+```
