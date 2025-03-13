@@ -22,7 +22,6 @@ export class TransactionController {
       description: req.body.description,
       value: req.body.value,
     };
-    console.log(transactionInput)
     await this.transactionBusiness.createTransaction(transactionInput);
     res.status(201).send({ message: "Transação criada com sucesso" });
   }

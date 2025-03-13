@@ -35,10 +35,10 @@ export class UserBusiness {
       throw new CustomError("E-mail inválido.", 406);
     }
 
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const passwordRegex =  /^\d{6,}$/;
     if (!passwordRegex.test(password)) {
       throw new CustomError(
-        "Senha inválida. Deve conter pelo menos 8 caracteres, incluindo letras e números.",
+        "Senha inválida. Deve conter pelo menos 6 caracteres",
         406
       );
     }
