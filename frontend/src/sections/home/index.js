@@ -1,11 +1,14 @@
-import { TextField, Button, Box, Typography, Container, Paper } from "@mui/material";
+import { TextField, Button, Box, Typography, Container, Paper, Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { goToSignUpPage } from "../../router/coordinator";
 import { useLoginForm } from "./useLoginForm";
+import { useState } from "react";
 
 export default function Login() {
   const navigate = useNavigate()
-  const {register, handleSubmit, onFormSubmit, errors  } = useLoginForm(navigate)
+  const [loginError, setLoginError] = useState("")
+  const {register, handleSubmit, onFormSubmit, errors  } = useLoginForm(navigate, setLoginError)
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -49,6 +52,12 @@ export default function Login() {
             Gostaria de cadastrar?
           </Typography>
         </Box>
+
+        {loginError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {loginError}
+          </Alert>
+        )}
       </Paper>
     </Container>
   );

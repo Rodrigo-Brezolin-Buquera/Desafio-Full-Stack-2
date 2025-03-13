@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { setStorageItem } from '../../utils/storageManager';
 import { goToUserPage } from '../../router/coordinator';
 
-export const useSignUpForm = (navigate) => {
+export const useSignUpForm = (navigate, setSignupError) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
   
     const onFormSubmit = async (body) => {
@@ -18,13 +18,13 @@ export const useSignUpForm = (navigate) => {
           } catch (error) {
             if (error.response) {
                 console.error("Erro do Backend:", error.response.data);
-                console.log(error.response.data.message || "Erro desconhecido do servidor");
+                setSignupError(error.response.data.message || "Erro desconhecido do servidor");
             } else if (error.request) {
                 console.error("Erro de Conexão:", error.request);
-                console.log("Erro de conexão com o servidor. Tente novamente.");
+                setSignupError("Erro de conexão com o servidor. Tente novamente.");
             } else {
                 console.error("Erro inesperado:", error.message);
-                console.log("Ocorreu um erro inesperado. Verifique o console.");
+                setSignupError("Ocorreu um erro inesperado. Verifique o console.");
             }  }
 
 

@@ -1,20 +1,40 @@
-import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+  Alert
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { goTohome } from "../../router/coordinator";
 import { useSignUpForm } from "./useSignUpForm";
+import { useState } from "react";
 
 export default function Signup() {
   const navigate = useNavigate();
-  const {register, handleSubmit, onFormSubmit, errors  } = useSignUpForm(navigate)
- 
+  const [signupError, setSignupError] = useState("");
+  const { register, handleSubmit, onFormSubmit, errors } = useSignUpForm(
+    navigate,
+    setSignupError
+  );
+
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} sx={{ padding: 4, marginTop: 8, textAlign: "center" }}>
+      <Paper
+        elevation={3}
+        sx={{ padding: 4, marginTop: 8, textAlign: "center" }}
+      >
         <Typography variant="h5" gutterBottom>
           Cadastro
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit(onFormSubmit)} sx={{ mt: 2 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onFormSubmit)}
+          sx={{ mt: 2 }}
+        >
           <TextField
             label="Nome"
             variant="outlined"
@@ -24,7 +44,7 @@ export default function Signup() {
             error={!!errors.name}
             helperText={errors.name?.message}
           />
-          
+
           <TextField
             label="Email"
             variant="outlined"
@@ -42,29 +62,45 @@ export default function Signup() {
             fullWidth
             margin="normal"
             type="password"
-            {...register("password", { 
-              required: "Senha é obrigatória", 
-              minLength: { value: 6, message: "Senha deve ter pelo menos 6 caracteres"},
+            {...register("password", {
+              required: "Senha é obrigatória",
+              minLength: {
+                value: 6,
+                message: "Senha deve ter pelo menos 6 caracteres",
+              },
             })}
             error={!!errors.password}
             helperText={errors.password?.message}
           />
 
-            <TextField
+          <TextField
             label="CPF"
             variant="outlined"
             fullWidth
             margin="normal"
             type="text"
-            {...register("cpf", { required: "CPF é obrigatório", 
-              minLength: { value: 14, message: "CPF inválido. Use o formato XXX.XXX.XXX-XX."},
-              maxLength: { value: 14, message: "CPF inválido. Use o formato XXX.XXX.XXX-XX."}
-             })}
+            {...register("cpf", {
+              required: "CPF é obrigatório",
+              minLength: {
+                value: 14,
+                message: "CPF inválido. Use o formato XXX.XXX.XXX-XX.",
+              },
+              maxLength: {
+                value: 14,
+                message: "CPF inválido. Use o formato XXX.XXX.XXX-XX.",
+              },
+            })}
             error={!!errors.cpf}
             helperText={errors.cpf?.message}
           />
 
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2 }}
+          >
             Cadastrar
           </Button>
 
@@ -76,6 +112,11 @@ export default function Signup() {
             Já tem uma conta? Faça login.
           </Typography>
         </Box>
+        {signupError && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {signupError}
+          </Alert>
+        )}
       </Paper>
     </Container>
   );
