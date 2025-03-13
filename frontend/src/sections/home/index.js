@@ -1,18 +1,11 @@
-import { useState } from "react";
 import { TextField, Button, Box, Typography, Container, Paper } from "@mui/material";
-import { loginRequest } from "../../api/requests";
 import { useNavigate } from "react-router-dom";
+import { goToSignUpPage } from "../../router/coordinator";
+import { useLoginForm } from "./useLoginForm";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate()
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-     await loginRequest({email, password},navigate)
-
-  };
+  const {register, handleSubmit, onFormSubmit, errors  } = useLoginForm(navigate)
 
   return (
     <Container component="main" maxWidth="xs">
@@ -21,16 +14,16 @@ export default function Login() {
           Login
         </Typography>
 
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={handleSubmit(onFormSubmit)} sx={{ mt: 2 }}>
           <TextField
             label="Email"
             variant="outlined"
             fullWidth
             margin="normal"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            {...register("email", { required: "Email é obrigatório" })}
+            error={!!errors.email}
+            helperText={errors.email?.message}
           />
 
           <TextField
@@ -39,16 +32,20 @@ export default function Login() {
             fullWidth
             margin="normal"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            {...register("password", { required: "Senha é obrigatória" })}
+            error={!!errors.password}
+            helperText={errors.password?.message}
           />
 
           <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
             Entrar
           </Button>
 
-          <Typography variant="body2" sx={{ mt: 2, cursor: "pointer", color: "blue" }}>
+          <Typography 
+          variant="body2"
+           sx={{ mt: 2, cursor: "pointer", color: "blue" }}
+           onClick={()=>goToSignUpPage(navigate)}
+           >
             Gostaria de cadastrar?
           </Typography>
         </Box>
