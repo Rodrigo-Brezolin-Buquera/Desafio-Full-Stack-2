@@ -29,7 +29,7 @@ export default function UserPage() {
     <Container
       maxWidth="lg"
       sx={{
-        height: "100vh",
+        minheight: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
