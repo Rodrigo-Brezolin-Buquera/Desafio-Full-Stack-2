@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { useProtectedPage } from "../../hooks/useProtectedPage";
 import { useRequestData } from "../../hooks/useRequestData";
-import {
-  Container,
-  Typography,
-  Button,
-  Box,
-} from "@mui/material";
+import { Container, Typography, Button, Box, Alert } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTransactionForm } from "./useTransactionForm";
 import { handleLogout } from "../../api/logout";
@@ -25,7 +20,8 @@ export default function UserPage() {
   const { data: userData, isLoading: userIsLoading } = useRequestData(
     `/user/${id}`
   );
-  const [reloadTrigger, setReloadTrigger] = useState(true);
+  const [reloadTrigger, setReloadTrigger] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null);
   const { data: transactionList, isLoading: listIsloading } = useRequestData(
     `/transaction/${id}`,
     reloadTrigger
@@ -33,6 +29,7 @@ export default function UserPage() {
 
   const { register, handleSubmit, onFormSubmit, errors } = useTransactionForm(
     id,
+    setErrorMessage,
     setReloadTrigger
   );
   const {
@@ -86,7 +83,11 @@ export default function UserPage() {
         onFormSubmit={onFormSubmit}
         errors={errors}
       />
-
+      {errorMessage && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {errorMessage}
+        </Alert>
+      )}
       <FilterFields handlers={handlers} values={values} clearAll={clearAll} />
       <BalanceValue value={pointBalance} />
 
