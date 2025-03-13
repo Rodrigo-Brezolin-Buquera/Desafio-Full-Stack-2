@@ -4,3 +4,4 @@
 
  export const goToUserPage= (navigate, id) => navigate(`/user/${id}`);
 
+ export const goToSignUpPage= (navigate) => navigate("/signup");
