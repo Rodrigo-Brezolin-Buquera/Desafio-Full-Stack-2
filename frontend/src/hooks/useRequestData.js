@@ -12,7 +12,6 @@ export const useRequestData = (path, trigger) => {
             setLoading(true);
             const res = await api.get(path, getHeaders());
             setData(res.data);
-            console.log(res)
         } catch (err) {
 
         } finally {

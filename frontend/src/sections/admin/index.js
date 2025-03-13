@@ -7,7 +7,6 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import TransactionCard from "../../components/transactionCard/TransactionCard";
 import { useFilters } from "./useFilters";
 import { handleLogout } from "../../api/logout";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +18,7 @@ export default function AdminPage() {
   const { data, isLoading } = useRequestData("/transaction");
   const { filteredData, values, handlers, clearAll } = useFilters(data);
   const navigate = useNavigate();
+
   return (
     <Container
       maxWidth="lg"
