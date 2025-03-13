@@ -8,14 +8,18 @@ import {
   Typography,
   Button,
   TextField,
+  Box
 } from "@mui/material";
 import TransactionCard from "../../components/transactionCard/TransactionCard";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { useTransactionForm } from "./useTransactionForm";
+import { handleLogout } from "../../api/logout";
 
 export default function UserPage() {
   useProtectedPage();
   const { id } = useParams();
+  const navigate = useNavigate()
+
   const { data: userData, isLoading: userIsLoading } = useRequestData(
     `/user/${id}`
   );
@@ -45,6 +49,21 @@ export default function UserPage() {
           Painel do {userData.name}
         </Typography>
       )}
+       <Box
+        sx={{
+          position: "absolute",
+          top: 16,
+          right: 16,
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() =>handleLogout(navigate)}
+        >
+          Logout
+        </Button>
+      </Box>
 
       <Paper sx={{ p: 3, mb: 3, width: "100%" }}>
         <form onSubmit={handleSubmit(onFormSubmit)}>
