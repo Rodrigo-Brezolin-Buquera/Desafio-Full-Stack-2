@@ -38,7 +38,7 @@ app.post('/signup', (req, res) => userController.signup(req, res));
 const transactionController = new TransactionController()
 
 app.get('/transaction', adminTokenMW, (req, res) => transactionController.getAllTransactions(req, res));
-app.get('/transaction/:id', (req, res) => transactionController.getUserTransactions(req, res));
+app.get('/transaction/:id',userTokenMW, (req, res) => transactionController.getUserTransactions(req, res));
 app.post('/transaction',userTokenMW, (req, res) => transactionController.createTransaction(req, res));
 
 
