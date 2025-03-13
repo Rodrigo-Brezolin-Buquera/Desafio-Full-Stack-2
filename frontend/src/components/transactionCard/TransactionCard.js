@@ -2,7 +2,7 @@ import { Card, Typography, Grid } from "@mui/material";
 
 const TransactionCard = ({ transaction }) => {
   return (
-    <Card variant="outlined" sx={{ padding: 2, mb: 2 }}>
+    <Card variant="outlined" sx={{ padding: 1, mb: 1 }}>
     <Grid container spacing={2} S>
       <Grid item xs={4}> 
         <Typography variant="body1">
