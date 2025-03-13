@@ -1,5 +1,5 @@
 import React from 'react'
-import Login from '../sections/home/view'
+import Login from '../sections/home'
 
 const Home = () => {
   return (

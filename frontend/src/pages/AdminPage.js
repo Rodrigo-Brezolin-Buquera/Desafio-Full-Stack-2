@@ -1,5 +1,5 @@
 import React from 'react'
-import Admin from '../sections/admin/view'
+import Admin from '../sections/admin'
 
 const AdminPage = () => {
   return (

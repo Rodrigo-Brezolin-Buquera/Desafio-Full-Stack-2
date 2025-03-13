@@ -1,10 +1,9 @@
 import React from 'react'
-import { useProtectedPage } from '../hooks/useProtectedPage'
+import User from "../sections/user"
 
 const UserPage = () => {
-  useProtectedPage()
   return (
-    <div>UserPage</div>
+    <User/>
   )
 }
 

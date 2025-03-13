@@ -11,7 +11,7 @@ export default function AppRouter() {
       <Suspense fallback={<div>Carregando...</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/user:id" element={<UserPage />} />
+          <Route path="/user/:id" element={<UserPage />} />
           <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </Suspense>

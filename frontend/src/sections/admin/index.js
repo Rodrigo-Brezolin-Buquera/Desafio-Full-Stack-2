@@ -10,7 +10,7 @@ import {
   TextField,
   MenuItem,
 } from "@mui/material";
-import TransactionCard from "./transactionCard/TransactionCard";
+import TransactionCard from "../../components/transactionCard/TransactionCard";
 import { useFilters } from "./useFilters";
 
 export default function AdminPage() {
