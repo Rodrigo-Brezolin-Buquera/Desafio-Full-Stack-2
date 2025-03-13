@@ -1,33 +1,48 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useProtectedPage } from "../../hooks/useProtectedPage";
 import { useRequestData } from "../../hooks/useRequestData";
 import {
   Container,
-  Grid,
-  Paper,
   Typography,
   Button,
-  TextField,
-  Box
+  Box,
 } from "@mui/material";
-import TransactionCard from "../../components/transactionCard/TransactionCard";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useTransactionForm } from "./useTransactionForm";
 import { handleLogout } from "../../api/logout";
+import { useFilters } from "./useFilters";
+import { usePointBalance } from "./usePointBalance";
+import { FilterFields } from "./filterFields";
+import { TransactionList } from "./transactionList";
+import { TransactionForm } from "./transactionForm";
+import { BalanceValue } from "./balanceValue";
 
 export default function UserPage() {
   useProtectedPage();
   const { id } = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { data: userData, isLoading: userIsLoading } = useRequestData(
     `/user/${id}`
   );
-  const [reloadTrigger, setReloadTrigger] = useState(true); 
+  const [reloadTrigger, setReloadTrigger] = useState(true);
   const { data: transactionList, isLoading: listIsloading } = useRequestData(
-    `/transaction/${id}`, reloadTrigger
+    `/transaction/${id}`,
+    reloadTrigger
   );
-  const { register, handleSubmit, onFormSubmit, errors } = useTransactionForm(id, setReloadTrigger);
+
+  const { register, handleSubmit, onFormSubmit, errors } = useTransactionForm(
+    id,
+    setReloadTrigger
+  );
+  const {
+    filteredData: filteredList,
+    values,
+    handlers,
+    clearAll,
+  } = useFilters(transactionList);
+
+  const { pointBalance } = usePointBalance(filteredList);
 
   return (
     <Container
@@ -49,7 +64,7 @@ export default function UserPage() {
           Painel do {userData.name}
         </Typography>
       )}
-       <Box
+      <Box
         sx={{
           position: "absolute",
           top: 16,
@@ -59,77 +74,23 @@ export default function UserPage() {
         <Button
           variant="contained"
           color="primary"
-          onClick={() =>handleLogout(navigate)}
+          onClick={() => handleLogout(navigate)}
         >
           Logout
         </Button>
       </Box>
 
-      <Paper sx={{ p: 3, mb: 3, width: "100%" }}>
-        <form onSubmit={handleSubmit(onFormSubmit)}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                label="Descrição"
-                variant="outlined"
-                fullWidth
-                {...register("description", { required: "Campo obrigatório" })}
-                error={!!errors.description}
-                helperText={errors.description?.message}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                label="Valor (R$)"
-                type="number"
-                variant="outlined"
-                fullWidth
-                {...register("value", {
-                  required: "Campo obrigatório",
-                  min: { value: 1, message: "O valor deve ser maior que 0" },
-                })}
-                error={!!errors.value}
-                helperText={errors.value?.message}
-              />
-            </Grid>
+      <TransactionForm
+        register={register}
+        handleSubmit={handleSubmit}
+        onFormSubmit={onFormSubmit}
+        errors={errors}
+      />
 
-            <Grid
-              item
-              xs={12}
-              display={"flex"}
-              justifyContent="center"
-              alignItems="center"
-              sm={4}
-            >
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-              >
-                Cadastrar Transação
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
-      <Grid container spacing={3} sx={{ width: "100%" }}>
-        <Grid item xs={12}>
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6">Lista de Transações</Typography>
-            {listIsloading && <p>Carregando...</p>}
-            <ul>
-              {transactionList && transactionList.length > 0 ? (
-                transactionList.map((t) => (
-                  <TransactionCard key={t.id} transaction={t} />
-                ))
-              ) : (
-                <p>Nenhuma transação encontrada.</p>
-              )}
-            </ul>
-          </Paper>
-        </Grid>
-      </Grid>
+      <FilterFields handlers={handlers} values={values} clearAll={clearAll} />
+      <BalanceValue value={pointBalance} />
+
+      <TransactionList isLoading={listIsloading} list={filteredList} />
     </Container>
   );
 }
